@@ -1,8 +1,15 @@
+import { useState } from 'react'
 import { Link, useParams } from 'react-router'
+import ProdutoCard from '../components/ProdutoCard'
+import { formatarPreco } from '../utils/formatarPreco'
+import { encontrarProdutoPorId } from '../utils/produtosDisponiveis'
 
-export default function PaginaProduto({ produtos, onAdicionar }) {
+export default function PaginaProduto({ produtos, onAdicionar, onNotificarDisponibilidade }) {
   const { id } = useParams()
-  const produto = produtos.find((item) => item.id === id)
+  const [nome, setNome] = useState('')
+  const [email, setEmail] = useState('')
+  const [mensagemAviso, setMensagemAviso] = useState('')
+  const produto = encontrarProdutoPorId(produtos, id)
 
   if (!produto) {
     return (
@@ -15,9 +22,30 @@ export default function PaginaProduto({ produtos, onAdicionar }) {
     )
   }
 
+  const esgotado = Number(produto.estoque ?? 0) === 0
+
   const relacionados = produtos
-    .filter((item) => item.category === produto.category && item.id !== produto.id)
+    .filter(
+      (item) =>
+        item.category === produto.category &&
+        Number(item.id) !== Number(produto.id) &&
+        Number(item.estoque ?? 0) > 0,
+    )
     .slice(0, 4)
+
+  function handleNotificarDisponibilidade(evento) {
+    evento.preventDefault()
+
+    if (!nome.trim() || !email.trim()) {
+      setMensagemAviso('Preencha nome e e-mail para entrar na lista de espera.')
+      return
+    }
+
+    onNotificarDisponibilidade(produto.id, nome, email)
+    setNome('')
+    setEmail('')
+    setMensagemAviso('Você entrou na lista de espera. Vamos avisar quando o produto voltar!')
+  }
 
   return (
     <section>
@@ -37,17 +65,41 @@ export default function PaginaProduto({ produtos, onAdicionar }) {
           <p className="card-avaliacao">
             ★ {produto.rating.rate} <span>({produto.rating.count} avaliações)</span>
           </p>
-          <p className="detalhe-preco">R$ {produto.price.toFixed(2).replace('.', ',')}</p>
+          <p className="detalhe-preco">{formatarPreco(produto.price)}</p>
           <p className="detalhe-descricao">{produto.description}</p>
           <p className="detalhe-estoque">{produto.estoque} unidades disponíveis</p>
 
-          <button
-            className="botao botao-grande"
-            onClick={() => onAdicionar(produto)}
-            disabled={produto.estoque === 0}
-          >
-            Adicionar ao carrinho
-          </button>
+          {esgotado ? (
+            <form onSubmit={handleNotificarDisponibilidade} className="cupom">
+              <label className="rotulo">Produto esgotado. Deixe seu e-mail para ser avisado.</label>
+              <input
+                type="text"
+                value={nome}
+                onChange={(evento) => setNome(evento.target.value)}
+                placeholder="Seu nome"
+                className="cupom-campo"
+              />
+              <input
+                type="email"
+                value={email}
+                onChange={(evento) => setEmail(evento.target.value)}
+                placeholder="Seu e-mail"
+                className="cupom-campo"
+              />
+              <button type="submit" className="botao botao-grande">
+                Avise-me quando voltar
+              </button>
+              {mensagemAviso && <p className="mensagem-cupom">{mensagemAviso}</p>}
+            </form>
+          ) : (
+            <button
+              className="botao botao-grande"
+              onClick={() => onAdicionar(produto)}
+              disabled={produto.estoque === 0}
+            >
+              Adicionar ao carrinho
+            </button>
+          )}
 
           <ul className="detalhe-garantias">
             <li>Troca grátis em até 30 dias</li>
@@ -59,18 +111,7 @@ export default function PaginaProduto({ produtos, onAdicionar }) {
       <h2>Produtos relacionados</h2>
       <div className="grade">
         {relacionados.map((item) => (
-          <article key={item.id} className="card">
-            <Link to={`/produto/${item.id}`} className="card-link">
-              <div className="card-imagem-moldura">
-                <img src={item.image} alt={item.title} className="card-imagem" />
-              </div>
-              <h3 className="card-titulo">{item.title}</h3>
-            </Link>
-            <p className="preco">R$ {Number(item.price).toFixed(2).replace('.', ',')}</p>
-            <button className="botao" onClick={() => onAdicionar(item)}>
-              Adicionar ao carrinho
-            </button>
-          </article>
+          <ProdutoCard key={item.id} produto={item} onAdicionar={onAdicionar} />
         ))}
       </div>
     </section>

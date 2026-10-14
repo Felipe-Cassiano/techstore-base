@@ -14,7 +14,7 @@ Você assumiu a manutenção da TechStore, uma loja virtual em React que já est
 
 ---
 
-## Obrigatório 1: Total do carrinho
+## Obrigatório 1: Total do carrinho (FEITO)
 
 **Mensagem do dono da loja, 6 de outubro**
 
@@ -29,7 +29,7 @@ Você assumiu a manutenção da TechStore, uma loja virtual em React que já est
 
 ---
 
-## Obrigatório 2: Produtos esgotados
+## Obrigatório 2: Produtos esgotados (FEITO)
 
 **Mensagem do comercial, 7 de outubro**
 
@@ -49,7 +49,7 @@ Você assumiu a manutenção da TechStore, uma loja virtual em React que já est
 
 > Recebemos várias reclamações de que o botão de adicionar ao carrinho não funciona. Uma cliente disse que clicou e nada aconteceu, então clicou de novo, e de novo. Quando foi pagar, tinha 5 unidades da mesma camiseta no carrinho.
 
-### B. Cupom de primeira compra
+### B. Cupom de primeira compra (FEITO)
 
 **Mensagem do dono da loja, 9 de outubro**
 
@@ -69,7 +69,7 @@ Você assumiu a manutenção da TechStore, uma loja virtual em React que já est
 
 > Quero uma página só para mim, com acesso pelo menu, para acompanhar a loja. Preciso saber quanto dinheiro tenho parado em estoque em cada categoria, ou seja, quanto eu receberia se vendesse tudo hoje. Quero ver também o que está parado esperando o preço do time de suprimentos e quantos clientes estão esperando produtos esgotados voltarem. E quero ver quanto estou lucrando em cada categoria. Ah, e quero que a página tenha a cara da loja.
 
-### D. Card de produto
+### D. Card de produto (FEITO)
 
 **Mensagem do time de produto, 10 de outubro**
 

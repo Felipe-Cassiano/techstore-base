@@ -1,10 +1,10 @@
 # Regras de negócio
 
-Última atualização: março de 2026
+Última atualização: outubro de 2026
 
 ## Frete grátis
 
-Produtos com preço acima de R$ 100 têm frete grátis e exibem o selo "Frete grátis".
+Produtos com preço acima de R$ 200 têm frete grátis e exibem o selo "Frete grátis".
 
 ## Cupons
 
